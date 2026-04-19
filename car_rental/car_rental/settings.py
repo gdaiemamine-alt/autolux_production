@@ -71,27 +71,23 @@ WSGI_APPLICATION = 'car_rental.wsgi.application'
 
 # ── Base de données ────────────────────────────────────────────────────────────
 # SQLite par défaut (dev). En prod, mettre DATABASE_URL ou variables séparées.
-if IS_PRODUCTION and os.environ.get('DB_NAME'):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME':     os.environ.get('DB_NAME', 'autolux'),
-            'USER':     os.environ.get('DB_USER', 'autolux'),
-            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-            'HOST':     os.environ.get('DB_HOST', 'localhost'),
-            'PORT':     os.environ.get('DB_PORT', '5432'),
-        }
-    }
-else:
-     
+ 
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
+if DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.config(
-            default='sqlite:///db.sqlite3',
+            default=DATABASE_URL,
             conn_max_age=600
-        )   
+        )
     }
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 # ── Validation mots de passe ───────────────────────────────────────────────────
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
