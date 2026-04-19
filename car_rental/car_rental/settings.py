@@ -124,17 +124,18 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 # ── Sécurité HTTPS (production uniquement) ─────────────────────────────────────
-if IS_PRODUCTION:
-    SECURE_SSL_REDIRECT           = True
-    SECURE_HSTS_SECONDS           = 31536000   # 1 an
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD           = True
-    SECURE_BROWSER_XSS_FILTER     = True
-    SECURE_CONTENT_TYPE_NOSNIFF   = True
-    SESSION_COOKIE_SECURE         = True
-    CSRF_COOKIE_SECURE            = True
-    X_FRAME_OPTIONS               = 'DENY'
 
+if IS_PRODUCTION:
+    SECURE_SSL_REDIRECT = False
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    X_FRAME_OPTIONS = 'DENY'
 # ── Email (production) ─────────────────────────────────────────────────────────
 if IS_PRODUCTION and os.environ.get('EMAIL_HOST'):
     EMAIL_BACKEND   = 'django.core.mail.backends.smtp.EmailBackend'
