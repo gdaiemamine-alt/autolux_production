@@ -1,0 +1,6 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "deploy": {
+    "startCommand": "cd /app/car_rental && python manage.py migrate && gunicorn car_rental.wsgi:application --bind 0.0.0.0:$PORT"
+  }
+}
