@@ -161,7 +161,7 @@ if IS_PRODUCTION:
     
     'loggers': {
         'django': {
-            'handlers': ['file'],
+            'handlers': ['console'],
             'level': 'ERROR',
             'propagate': True,
         },
