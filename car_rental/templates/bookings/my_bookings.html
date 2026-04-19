@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Mes Réservations — AutoLux{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <p class="section-eyebrow">◆ Espace personnel</p>
+        <h1>Mes Réservations</h1>
+    </div>
+</div>
+<section class="booking-section">
+    <div class="container">
+        {% if bookings %}
+        <div class="bookings-list">
+            {% for booking in bookings %}
+            <div class="booking-row">
+                <div class="booking-row-img">
+                    <img src="{{ booking.car.get_image_url }}" alt="{{ booking.car }}" onerror="this.src='https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=200&q=80'">
+                </div>
+                <div class="booking-row-info">
+                    <h4>{{ booking.car.brand }} {{ booking.car.model }}</h4>
+                    <p>{{ booking.start_date|date:"d/m/Y" }} → {{ booking.end_date|date:"d/m/Y" }} · {{ booking.duration_days }} jour{{ booking.duration_days|pluralize }}</p>
+                </div>
+                <div class="booking-row-status">
+                    <span class="status-badge status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+                    <strong>{{ booking.total_price }} DT</strong>
+                </div>
+                <div class="booking-row-actions">
+                    <a href="{% url 'booking_detail' booking.pk %}" class="btn-card">Détails</a>
+                    {% if booking.status == "pending" or booking.status == "confirmed" %}
+                    <a href="{% url 'cancel_booking' booking.pk %}" class="btn-danger-sm" onclick="return confirm('Annuler ?')">Annuler</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <p>🚗 Vous n'avez aucune réservation pour le moment.</p>
+            <a href="{% url 'car_list' %}" class="btn-primary">Parcourir les véhicules</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Nos Véhicules — AutoLux{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <p class="section-eyebrow">◆ Notre Flotte</p>
+        <h1>Tous les Véhicules</h1>
+    </div>
+</div>
+
+<section class="car-list-section">
+    <div class="container">
+        <div class="list-layout">
+
+            <!-- SIDEBAR FILTERS -->
+            <aside class="filters-sidebar">
+                <h3>Filtres</h3>
+                <form method="GET" action="">
+                    <div class="filter-group">
+                        <label>Recherche</label>
+                        <input type="text" name="search" value="{{ request.GET.search }}" placeholder="Marque, modèle..." class="form-control">
+                    </div>
+                    <div class="filter-group">
+                        <label>Catégorie</label>
+                        <select name="category" class="form-control">
+                            <option value="">Toutes</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat.pk }}" {% if request.GET.category == cat.pk|stringformat:"s" %}selected{% endif %}>{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Transmission</label>
+                        <select name="transmission" class="form-control">
+                            <option value="">Toutes</option>
+                            <option value="manual" {% if request.GET.transmission == "manual" %}selected{% endif %}>Manuelle</option>
+                            <option value="automatic" {% if request.GET.transmission == "automatic" %}selected{% endif %}>Automatique</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Carburant</label>
+                        <select name="fuel_type" class="form-control">
+                            <option value="">Tous</option>
+                            <option value="gasoline" {% if request.GET.fuel_type == "gasoline" %}selected{% endif %}>Essence</option>
+                            <option value="diesel" {% if request.GET.fuel_type == "diesel" %}selected{% endif %}>Diesel</option>
+                            <option value="electric" {% if request.GET.fuel_type == "electric" %}selected{% endif %}>Électrique</option>
+                            <option value="hybrid" {% if request.GET.fuel_type == "hybrid" %}selected{% endif %}>Hybride</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Prix max (DT/jour)</label>
+                        <input type="number" name="max_price" value="{{ request.GET.max_price }}" placeholder="ex: 200" class="form-control">
+                    </div>
+                    <div class="filter-group checkbox-group">
+                        <label>
+                            <input type="checkbox" name="available_only" {% if request.GET.available_only %}checked{% endif %}>
+                            Disponibles uniquement
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%">Filtrer</button>
+                    <a href="{% url 'car_list' %}" class="btn-ghost" style="width:100%; text-align:center; margin-top:8px; display:block">Réinitialiser</a>
+                </form>
+            </aside>
+
+            <!-- CAR GRID -->
+            <div class="cars-main">
+                <div class="results-header">
+                    <span>{{ cars.count }} véhicule{{ cars.count|pluralize }} trouvé{{ cars.count|pluralize }}</span>
+                </div>
+                <div class="cars-grid">
+                    {% for car in cars %}
+                    <div class="car-card">
+                        <div class="car-card-image">
+                            <img src="{{ car.get_image_url }}" alt="{{ car }}" onerror="this.src='https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80'">
+                            <div class="car-badge {% if car.is_available %}badge-available{% else %}badge-unavailable{% endif %}">
+                                {% if car.is_available %}Disponible{% else %}Indisponible{% endif %}
+                            </div>
+                        </div>
+                        <div class="car-card-body">
+                            <div class="car-meta">
+                                <span class="car-category">{{ car.category }}</span>
+                                <span class="car-year">{{ car.year }}</span>
+                            </div>
+                            <h3 class="car-name">{{ car.brand }} {{ car.model }}</h3>
+                            <div class="car-specs">
+                                <span>👤 {{ car.seats }} places</span>
+                                <span>⚙️ {{ car.get_transmission_display }}</span>
+                                <span>⛽ {{ car.get_fuel_type_display }}</span>
+                            </div>
+                            <div class="car-card-footer">
+                                <div class="car-price">
+                                    <span class="price-amount">{{ car.price_per_day }} DT</span>
+                                    <span class="price-unit">/ jour</span>
+                                </div>
+                                <a href="{% url 'car_detail' car.pk %}" class="btn-card">Voir →</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="empty-state" style="grid-column:1/-1">
+                        <p>🚗 Aucun véhicule ne correspond à vos critères.</p>
+                        <a href="{% url 'car_list' %}" class="btn-ghost">Voir tous les véhicules</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

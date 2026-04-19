@@ -1,0 +1,160 @@
+[
+  {
+    "model": "cars.category",
+    "pk": 1,
+    "fields": { "name": "Citadine", "description": "Voitures compactes idéales pour la ville" }
+  },
+  {
+    "model": "cars.category",
+    "pk": 2,
+    "fields": { "name": "Berline", "description": "Confort et élégance pour vos déplacements" }
+  },
+  {
+    "model": "cars.category",
+    "pk": 3,
+    "fields": { "name": "SUV", "description": "Polyvalence et espace pour toute la famille" }
+  },
+  {
+    "model": "cars.category",
+    "pk": 4,
+    "fields": { "name": "Prestige", "description": "Le summum du luxe automobile" }
+  },
+  {
+    "model": "cars.car",
+    "pk": 1,
+    "fields": {
+      "name": "Volkswagen Polo",
+      "brand": "Volkswagen",
+      "model": "Polo",
+      "year": 2022,
+      "category": 1,
+      "price_per_day": "65.00",
+      "seats": 5,
+      "doors": 4,
+      "transmission": "manual",
+      "fuel_type": "gasoline",
+      "description": "Citadine fiable et économique, parfaite pour la ville.",
+      "image": "",
+      "is_available": true,
+      "mileage": 15000,
+      "air_conditioning": true,
+      "gps": false,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "cars.car",
+    "pk": 2,
+    "fields": {
+      "name": "Peugeot 308",
+      "brand": "Peugeot",
+      "model": "308",
+      "year": 2023,
+      "category": 2,
+      "price_per_day": "90.00",
+      "seats": 5,
+      "doors": 4,
+      "transmission": "automatic",
+      "fuel_type": "diesel",
+      "description": "Berline élégante avec motorisation diesel économique.",
+      "image": "",
+      "is_available": true,
+      "mileage": 8000,
+      "air_conditioning": true,
+      "gps": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "cars.car",
+    "pk": 3,
+    "fields": {
+      "name": "Toyota RAV4",
+      "brand": "Toyota",
+      "model": "RAV4",
+      "year": 2023,
+      "category": 3,
+      "price_per_day": "130.00",
+      "seats": 5,
+      "doors": 5,
+      "transmission": "automatic",
+      "fuel_type": "hybrid",
+      "description": "SUV hybride spacieux et confortable, idéal pour les familles.",
+      "image": "",
+      "is_available": true,
+      "mileage": 5000,
+      "air_conditioning": true,
+      "gps": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "cars.car",
+    "pk": 4,
+    "fields": {
+      "name": "Mercedes Classe E",
+      "brand": "Mercedes",
+      "model": "Classe E",
+      "year": 2023,
+      "category": 4,
+      "price_per_day": "250.00",
+      "seats": 5,
+      "doors": 4,
+      "transmission": "automatic",
+      "fuel_type": "gasoline",
+      "description": "La berline de prestige par excellence. Confort, technologie et élégance réunis.",
+      "image": "",
+      "is_available": true,
+      "mileage": 2000,
+      "air_conditioning": true,
+      "gps": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "cars.car",
+    "pk": 5,
+    "fields": {
+      "name": "Renault Clio",
+      "brand": "Renault",
+      "model": "Clio",
+      "year": 2022,
+      "category": 1,
+      "price_per_day": "55.00",
+      "seats": 5,
+      "doors": 4,
+      "transmission": "manual",
+      "fuel_type": "gasoline",
+      "description": "Citadine agile et moderne, idéale pour se déplacer en ville.",
+      "image": "",
+      "is_available": true,
+      "mileage": 20000,
+      "air_conditioning": true,
+      "gps": false,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "cars.car",
+    "pk": 6,
+    "fields": {
+      "name": "BMW X5",
+      "brand": "BMW",
+      "model": "X5",
+      "year": 2024,
+      "category": 4,
+      "price_per_day": "320.00",
+      "seats": 7,
+      "doors": 5,
+      "transmission": "automatic",
+      "fuel_type": "diesel",
+      "description": "SUV de luxe avec 7 places, technologie de pointe et prestations haut de gamme.",
+      "image": "",
+      "is_available": true,
+      "mileage": 1000,
+      "air_conditioning": true,
+      "gps": true,
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  }
+]

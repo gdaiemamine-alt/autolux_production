@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ car.brand }} {{ car.model }} — AutoLux{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <a href="{% url 'car_list' %}" class="back-link">← Retour aux véhicules</a>
+        <h1>{{ car.brand }} {{ car.model }}</h1>
+        <p class="section-eyebrow">{{ car.category }} · {{ car.year }}</p>
+    </div>
+</div>
+
+<section class="car-detail-section">
+    <div class="container">
+        <div class="detail-layout">
+
+            <!-- LEFT: Image + Specs -->
+            <div class="detail-left">
+                <div class="detail-image">
+                    <img src="{{ car.get_image_url }}" alt="{{ car }}" onerror="this.src='https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80'">
+                    <div class="car-badge {% if car.is_available %}badge-available{% else %}badge-unavailable{% endif %}" style="font-size:1rem; padding:8px 16px;">
+                        {% if car.is_available %}✓ Disponible{% else %}✗ Indisponible{% endif %}
+                    </div>
+                </div>
+
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <span class="spec-icon">👥</span>
+                        <span class="spec-label">Places</span>
+                        <span class="spec-value">{{ car.seats }}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-icon">🚪</span>
+                        <span class="spec-label">Portes</span>
+                        <span class="spec-value">{{ car.doors }}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-icon">⚙️</span>
+                        <span class="spec-label">Boîte</span>
+                        <span class="spec-value">{{ car.get_transmission_display }}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-icon">⛽</span>
+                        <span class="spec-label">Carburant</span>
+                        <span class="spec-value">{{ car.get_fuel_type_display }}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-icon">🌡️</span>
+                        <span class="spec-label">Climatisation</span>
+                        <span class="spec-value">{% if car.air_conditioning %}✓{% else %}✗{% endif %}</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-icon">🗺️</span>
+                        <span class="spec-label">GPS</span>
+                        <span class="spec-value">{% if car.gps %}✓{% else %}✗{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Info + Book -->
+            <div class="detail-right">
+                <div class="detail-info">
+                    <h2>{{ car.brand }} {{ car.model }} <span class="year-tag">{{ car.year }}</span></h2>
+                    <div class="detail-price">
+                        <span class="price-big">{{ car.price_per_day }} DT</span>
+                        <span class="price-unit">/ jour</span>
+                    </div>
+
+                    {% if car.description %}
+                    <div class="detail-description">
+                        <h4>Description</h4>
+                        <p>{{ car.description }}</p>
+                    </div>
+                    {% endif %}
+
+                    <div class="detail-actions">
+                        {% if car.is_available %}
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'book_car' car.pk %}" class="btn-primary btn-lg">Réserver ce véhicule</a>
+                            {% else %}
+                                <a href="{% url 'login' %}?next={% url 'book_car' car.pk %}" class="btn-primary btn-lg">Se connecter pour réserver</a>
+                            {% endif %}
+                        {% else %}
+                            <button class="btn-primary btn-lg" disabled style="opacity:0.5; cursor:not-allowed;">Non disponible actuellement</button>
+                        {% endif %}
+                        <a href="{% url 'car_list' %}" class="btn-ghost">Voir d'autres véhicules</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Similar Cars -->
+        {% if similar_cars %}
+        <div class="similar-section">
+            <h3>Véhicules similaires</h3>
+            <div class="cars-grid">
+                {% for scar in similar_cars %}
+                <div class="car-card">
+                    <div class="car-card-image">
+                        <img src="{{ scar.get_image_url }}" alt="{{ scar }}" onerror="this.src='https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&q=80'">
+                    </div>
+                    <div class="car-card-body">
+                        <h3 class="car-name">{{ scar.brand }} {{ scar.model }}</h3>
+                        <div class="car-card-footer">
+                            <div class="car-price">
+                                <span class="price-amount">{{ scar.price_per_day }} DT</span>
+                                <span class="price-unit">/ jour</span>
+                            </div>
+                            <a href="{% url 'car_detail' scar.pk %}" class="btn-card">Voir →</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

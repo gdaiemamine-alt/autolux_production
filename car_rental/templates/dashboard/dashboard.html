@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard Admin — AutoLux{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <p class="section-eyebrow">◆ Espace Administration</p>
+        <h1>Dashboard</h1>
+    </div>
+</div>
+
+<section class="dashboard-section">
+    <div class="container">
+
+        <!-- KPI CARDS -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon">🚗</div>
+                <div class="kpi-body">
+                    <span class="kpi-num">{{ total_cars }}</span>
+                    <span class="kpi-label">Véhicules total</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">✅</div>
+                <div class="kpi-body">
+                    <span class="kpi-num">{{ available_cars }}</span>
+                    <span class="kpi-label">Disponibles</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">📅</div>
+                <div class="kpi-body">
+                    <span class="kpi-num">{{ total_bookings }}</span>
+                    <span class="kpi-label">Réservations</span>
+                </div>
+            </div>
+            <div class="kpi-card kpi-gold">
+                <div class="kpi-icon">💰</div>
+                <div class="kpi-body">
+                    <span class="kpi-num">{{ total_revenue }} DT</span>
+                    <span class="kpi-label">Revenus totaux</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">👥</div>
+                <div class="kpi-body">
+                    <span class="kpi-num">{{ total_users }}</span>
+                    <span class="kpi-label">Utilisateurs</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon">⏳</div>
+                <div class="kpi-body">
+                    <span class="kpi-num">{{ pending_bookings }}</span>
+                    <span class="kpi-label">En attente</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- RECENT BOOKINGS -->
+        <div class="dash-section">
+            <div class="dash-section-header">
+                <h3>Réservations récentes</h3>
+                <a href="{% url 'admin_bookings' %}" class="btn-card">Tout voir →</a>
+            </div>
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Client</th>
+                            <th>Véhicule</th>
+                            <th>Dates</th>
+                            <th>Montant</th>
+                            <th>Statut</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b in recent_bookings %}
+                        <tr>
+                            <td>#{{ b.pk }}</td>
+                            <td>{{ b.user.get_full_name|default:b.user.username }}</td>
+                            <td>{{ b.car.brand }} {{ b.car.model }}</td>
+                            <td>{{ b.start_date|date:"d/m/Y" }} → {{ b.end_date|date:"d/m/Y" }}</td>
+                            <td class="gold-text">{{ b.total_price }} DT</td>
+                            <td><span class="status-badge status-{{ b.status }}">{{ b.get_status_display }}</span></td>
+                            <td>
+                                <a href="{% url 'admin_booking_update' b.pk %}" class="btn-card" style="font-size:0.75rem;">Modifier</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:24px;">Aucune réservation</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- QUICK ACTIONS -->
+        <div class="dash-section">
+            <h3 style="margin-bottom:20px;">Actions rapides</h3>
+            <div class="quick-actions">
+                <a href="{% url 'admin_car_add' %}" class="quick-action-card">
+                    <span class="qa-icon">➕</span>
+                    <span>Ajouter un véhicule</span>
+                </a>
+                <a href="{% url 'admin_cars' %}" class="quick-action-card">
+                    <span class="qa-icon">🚘</span>
+                    <span>Gérer les véhicules</span>
+                </a>
+                <a href="{% url 'admin_bookings' %}" class="quick-action-card">
+                    <span class="qa-icon">📋</span>
+                    <span>Toutes les réservations</span>
+                </a>
+                <a href="/admin/" class="quick-action-card">
+                    <span class="qa-icon">⚙️</span>
+                    <span>Django Admin</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

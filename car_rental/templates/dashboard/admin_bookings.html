@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Gérer les réservations — AutoLux Admin{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <a href="{% url 'admin_dashboard' %}" class="back-link">← Dashboard</a>
+        <h1>Toutes les Réservations</h1>
+    </div>
+</div>
+<section class="booking-section">
+    <div class="container">
+
+        <!-- Filtres statut -->
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:24px;">
+            <a href="?status=" class="btn-{% if not request.GET.status %}primary{% else %}ghost{% endif %}" style="padding:8px 18px; font-size:0.82rem;">Toutes</a>
+            <a href="?status=pending" class="btn-{% if request.GET.status == 'pending' %}primary{% else %}ghost{% endif %}" style="padding:8px 18px; font-size:0.82rem;">En attente</a>
+            <a href="?status=confirmed" class="btn-{% if request.GET.status == 'confirmed' %}primary{% else %}ghost{% endif %}" style="padding:8px 18px; font-size:0.82rem;">Confirmées</a>
+            <a href="?status=active" class="btn-{% if request.GET.status == 'active' %}primary{% else %}ghost{% endif %}" style="padding:8px 18px; font-size:0.82rem;">En cours</a>
+            <a href="?status=completed" class="btn-{% if request.GET.status == 'completed' %}primary{% else %}ghost{% endif %}" style="padding:8px 18px; font-size:0.82rem;">Terminées</a>
+            <a href="?status=cancelled" class="btn-{% if request.GET.status == 'cancelled' %}primary{% else %}ghost{% endif %}" style="padding:8px 18px; font-size:0.82rem;">Annulées</a>
+        </div>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Client</th>
+                        <th>Véhicule</th>
+                        <th>Début</th>
+                        <th>Fin</th>
+                        <th>Jours</th>
+                        <th>Total</th>
+                        <th>Statut</th>
+                        <th>Modifier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in bookings %}
+                    <tr>
+                        <td>#{{ b.pk }}</td>
+                        <td>
+                            <strong>{{ b.user.get_full_name|default:b.user.username }}</strong><br>
+                            <span style="color:var(--text-muted); font-size:0.78rem;">{{ b.user.email }}</span>
+                        </td>
+                        <td>{{ b.car.brand }} {{ b.car.model }}</td>
+                        <td>{{ b.start_date|date:"d/m/Y" }}</td>
+                        <td>{{ b.end_date|date:"d/m/Y" }}</td>
+                        <td>{{ b.duration_days }}j</td>
+                        <td class="gold-text">{{ b.total_price }} DT</td>
+                        <td><span class="status-badge status-{{ b.status }}">{{ b.get_status_display }}</span></td>
+                        <td>
+                            <a href="{% url 'admin_booking_update' b.pk %}" class="btn-card" style="font-size:0.75rem;">Statut</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="9" style="text-align:center; color:var(--text-muted); padding:32px;">Aucune réservation.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

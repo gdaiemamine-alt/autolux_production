@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Réserver — {{ car.brand }} {{ car.model }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <a href="{% url 'car_detail' car.pk %}" class="back-link">← Retour au véhicule</a>
+        <h1>Réserver ce véhicule</h1>
+    </div>
+</div>
+<section class="booking-section">
+    <div class="container">
+        <div class="booking-layout">
+            <div class="booking-form-card">
+                <h3>Informations de réservation</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="form-group">
+                        <label>{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}<span class="form-error">{{ field.errors.0 }}</span>{% endif %}
+                    </div>
+                    {% endfor %}
+                    {% if form.non_field_errors %}
+                    <div class="form-error">{{ form.non_field_errors.0 }}</div>
+                    {% endif %}
+                    <button type="submit" class="btn-primary btn-lg" style="width:100%; margin-top:16px;">Confirmer la réservation</button>
+                </form>
+            </div>
+            <div class="booking-summary">
+                <h3>Récapitulatif</h3>
+                <div class="summary-car">
+                    <img src="{{ car.get_image_url }}" alt="{{ car }}" onerror="this.src='https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=400&q=80'">
+                    <div>
+                        <h4>{{ car.brand }} {{ car.model }}</h4>
+                        <p>{{ car.year }} · {{ car.get_transmission_display }}</p>
+                    </div>
+                </div>
+                <div class="summary-price">
+                    <span>Tarif journalier</span>
+                    <strong>{{ car.price_per_day }} DT</strong>
+                </div>
+                <div class="summary-note">Le total sera calculé selon le nombre de jours sélectionnés.</div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

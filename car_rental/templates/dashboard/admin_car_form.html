@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}{% if car %}Modifier{% else %}Ajouter{% endif %} un véhicule — AutoLux{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <a href="{% url 'admin_cars' %}" class="back-link">← Véhicules</a>
+        <h1>{% if car %}Modifier : {{ car.brand }} {{ car.model }}{% else %}Ajouter un véhicule{% endif %}</h1>
+    </div>
+</div>
+<section class="booking-section">
+    <div class="container" style="max-width:800px;">
+        <div class="booking-form-card">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label>Marque</label>
+                        {{ form.brand }}
+                        {% if form.brand.errors %}<span class="form-error">{{ form.brand.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label>Modèle</label>
+                        {{ form.model }}
+                        {% if form.model.errors %}<span class="form-error">{{ form.model.errors.0 }}</span>{% endif %}
+                    </div>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label>Année</label>
+                        {{ form.year }}
+                    </div>
+                    <div class="form-group">
+                        <label>Catégorie</label>
+                        {{ form.category }}
+                    </div>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label>Prix par jour (DT)</label>
+                        {{ form.price_per_day }}
+                    </div>
+                    <div class="form-group">
+                        <label>Kilométrage</label>
+                        {{ form.mileage }}
+                    </div>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label>Places</label>
+                        {{ form.seats }}
+                    </div>
+                    <div class="form-group">
+                        <label>Portes</label>
+                        {{ form.doors }}
+                    </div>
+                </div>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label>Transmission</label>
+                        {{ form.transmission }}
+                    </div>
+                    <div class="form-group">
+                        <label>Carburant</label>
+                        {{ form.fuel_type }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    {{ form.description }}
+                </div>
+                <div class="form-group">
+                    <label>Photo</label>
+                    {{ form.image }}
+                    {% if car and car.image %}
+                    <div style="margin-top:8px;">
+                        <img src="{{ car.image.url }}" style="width:120px; border-radius:6px;">
+                        <p style="font-size:0.78rem; color:var(--text-muted); margin-top:4px;">Photo actuelle</p>
+                    </div>
+                    {% endif %}
+                </div>
+                <div style="display:flex; gap:16px; align-items:center; margin-top:4px;">
+                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--text-soft);">
+                        {{ form.is_available }} Disponible à la location
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--text-soft);">
+                        {{ form.air_conditioning }} Climatisation
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--text-soft);">
+                        {{ form.gps }} GPS
+                    </label>
+                </div>
+                <div style="margin-top:28px; display:flex; gap:12px;">
+                    <button type="submit" class="btn-primary btn-lg">
+                        {% if car %}Enregistrer les modifications{% else %}Ajouter le véhicule{% endif %}
+                    </button>
+                    <a href="{% url 'admin_cars' %}" class="btn-ghost">Annuler</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

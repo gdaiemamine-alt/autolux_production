@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Modifier réservation #{{ booking.pk }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <a href="{% url 'admin_bookings' %}" class="back-link">← Réservations</a>
+        <h1>Réservation #{{ booking.pk }}</h1>
+    </div>
+</div>
+<section class="booking-section">
+    <div class="container" style="max-width:600px;">
+        <div class="detail-card">
+            <div class="info-rows">
+                <div class="info-row"><span>Client</span><strong>{{ booking.user.get_full_name|default:booking.user.username }}</strong></div>
+                <div class="info-row"><span>Email</span><strong>{{ booking.user.email }}</strong></div>
+                <div class="info-row"><span>Véhicule</span><strong>{{ booking.car.brand }} {{ booking.car.model }}</strong></div>
+                <div class="info-row"><span>Période</span><strong>{{ booking.start_date|date:"d/m/Y" }} → {{ booking.end_date|date:"d/m/Y" }}</strong></div>
+                <div class="info-row"><span>Durée</span><strong>{{ booking.duration_days }} jours</strong></div>
+                <div class="info-row total-row"><span>Total</span><strong>{{ booking.total_price }} DT</strong></div>
+            </div>
+            <form method="POST" style="margin-top:28px;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label>Changer le statut</label>
+                    <select name="status" class="form-control">
+                        {% for val, label in status_choices %}
+                        <option value="{{ val }}" {% if booking.status == val %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div style="display:flex; gap:12px; margin-top:16px;">
+                    <button type="submit" class="btn-primary">Enregistrer</button>
+                    <a href="{% url 'admin_bookings' %}" class="btn-ghost">Retour</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

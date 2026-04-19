@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+        <p class="hero-eyebrow">◆ Service Premium depuis 2010</p>
+        <h1 class="hero-title">L'Excellence<br><em>en Mouvement</em></h1>
+        <p class="hero-subtitle">Découvrez notre collection de véhicules d'exception.<br>Élégance, confort et performance à votre service.</p>
+        <div class="hero-cta">
+            <a href="{% url 'car_list' %}" class="btn-primary">Explorer les Véhicules</a>
+            {% if not user.is_authenticated %}
+            <a href="{% url 'register' %}" class="btn-ghost">Créer un compte</a>
+            {% endif %}
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-num">{{ total_cars }}+</span>
+                <span class="stat-label">Véhicules</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+                <span class="stat-num">{{ available_cars }}</span>
+                <span class="stat-label">Disponibles</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+                <span class="stat-num">14</span>
+                <span class="stat-label">Années d'expérience</span>
+            </div>
+        </div>
+    </div>
+    <div class="hero-scroll">
+        <span>Défiler</span>
+        <div class="scroll-line"></div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+    <div class="container">
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Assurance Incluse</h3>
+                <p>Tous nos véhicules sont couverts par une assurance tous risques complète.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Réservation Instantanée</h3>
+                <p>Réservez en ligne en quelques clics, confirmation immédiate.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔑</div>
+                <h3>Livraison à Domicile</h3>
+                <p>Nous livrons votre véhicule directement à l'adresse de votre choix.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📞</div>
+                <h3>Support 24h/24</h3>
+                <p>Notre équipe est disponible à toute heure pour vous assister.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED CARS -->
+<section class="section-cars">
+    <div class="container">
+        <div class="section-header">
+            <p class="section-eyebrow">◆ Sélection du moment</p>
+            <h2>Véhicules à la Une</h2>
+        </div>
+        <div class="cars-grid">
+            {% for car in featured_cars %}
+            <div class="car-card" style="animation-delay: {{ forloop.counter0 }}00ms">
+                <div class="car-card-image">
+                    <img src="{{ car.get_image_url }}" alt="{{ car }}" onerror="this.src='https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=80'">
+                    <div class="car-badge {% if car.is_available %}badge-available{% else %}badge-unavailable{% endif %}">
+                        {% if car.is_available %}Disponible{% else %}Indisponible{% endif %}
+                    </div>
+                </div>
+                <div class="car-card-body">
+                    <div class="car-meta">
+                        <span class="car-category">{{ car.category }}</span>
+                        <span class="car-year">{{ car.year }}</span>
+                    </div>
+                    <h3 class="car-name">{{ car.brand }} {{ car.model }}</h3>
+                    <div class="car-specs">
+                        <span>👤 {{ car.seats }}</span>
+                        <span>⚙️ {{ car.get_transmission_display }}</span>
+                        <span>⛽ {{ car.get_fuel_type_display }}</span>
+                    </div>
+                    <div class="car-card-footer">
+                        <div class="car-price">
+                            <span class="price-amount">{{ car.price_per_day }} DT</span>
+                            <span class="price-unit">/ jour</span>
+                        </div>
+                        <a href="{% url 'car_detail' car.pk %}" class="btn-card">Voir →</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p style="color:var(--text-muted); text-align:center; grid-column:1/-1;">Aucun véhicule disponible pour le moment.</p>
+            {% endfor %}
+        </div>
+        <div class="section-cta">
+            <a href="{% url 'car_list' %}" class="btn-primary">Voir tous les véhicules</a>
+        </div>
+    </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+    <div class="container">
+        <h2>Prêt à prendre la route ?</h2>
+        <p>Réservez dès maintenant et profitez de nos tarifs exceptionnels.</p>
+        <a href="{% url 'car_list' %}" class="btn-primary">Réserver maintenant</a>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Réservation #{{ booking.pk }} — AutoLux{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <a href="{% url 'my_bookings' %}" class="back-link">← Mes réservations</a>
+        <h1>Réservation #{{ booking.pk }}</h1>
+    </div>
+</div>
+<section class="booking-section">
+    <div class="container" style="max-width:700px">
+        <div class="detail-card">
+            <div class="detail-card-header">
+                <span class="status-badge status-{{ booking.status }}">{{ booking.get_status_display }}</span>
+                <span>Créée le {{ booking.created_at|date:"d/m/Y" }}</span>
+            </div>
+            <div class="summary-car" style="margin:24px 0">
+                <img src="{{ booking.car.get_image_url }}" alt="{{ booking.car }}" style="width:100px; border-radius:8px;" onerror="this.src='https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=200&q=80'">
+                <div>
+                    <h4>{{ booking.car.brand }} {{ booking.car.model }}</h4>
+                    <p>{{ booking.car.year }}</p>
+                </div>
+            </div>
+            <div class="info-rows">
+                <div class="info-row"><span>Date de début</span><strong>{{ booking.start_date|date:"d/m/Y" }}</strong></div>
+                <div class="info-row"><span>Date de fin</span><strong>{{ booking.end_date|date:"d/m/Y" }}</strong></div>
+                <div class="info-row"><span>Durée</span><strong>{{ booking.duration_days }} jour{{ booking.duration_days|pluralize }}</strong></div>
+                <div class="info-row"><span>Lieu de prise en charge</span><strong>{{ booking.pickup_location|default:"Non précisé" }}</strong></div>
+                <div class="info-row"><span>Lieu de retour</span><strong>{{ booking.return_location|default:"Non précisé" }}</strong></div>
+                <div class="info-row total-row"><span>TOTAL</span><strong>{{ booking.total_price }} DT</strong></div>
+            </div>
+            {% if booking.notes %}
+            <p style="margin-top:16px; color:var(--text-muted)">Notes: {{ booking.notes }}</p>
+            {% endif %}
+            <div style="margin-top:24px; display:flex; gap:12px;">
+                {% if booking.status in "pending,confirmed" %}
+                <a href="{% url 'cancel_booking' booking.pk %}" class="btn-danger" onclick="return confirm('Annuler cette réservation ?')">Annuler</a>
+                {% endif %}
+                <a href="{% url 'my_bookings' %}" class="btn-ghost">Toutes mes réservations</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

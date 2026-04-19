@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Gérer les véhicules — AutoLux Admin{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+        <div>
+            <a href="{% url 'admin_dashboard' %}" class="back-link">← Dashboard</a>
+            <h1>Véhicules</h1>
+        </div>
+        <a href="{% url 'admin_car_add' %}" class="btn-primary">+ Ajouter un véhicule</a>
+    </div>
+</div>
+<section class="booking-section">
+    <div class="container">
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Photo</th>
+                        <th>Véhicule</th>
+                        <th>Catégorie</th>
+                        <th>Tarif/jour</th>
+                        <th>Transmission</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for car in cars %}
+                    <tr>
+                        <td>
+                            <img src="{{ car.get_image_url }}" alt="{{ car }}" style="width:70px; border-radius:6px; aspect-ratio:16/9; object-fit:cover;" onerror="this.src='https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=200&q=80'">
+                        </td>
+                        <td><strong>{{ car.brand }} {{ car.model }}</strong><br><span style="color:var(--text-muted); font-size:0.8rem;">{{ car.year }}</span></td>
+                        <td>{{ car.category }}</td>
+                        <td class="gold-text">{{ car.price_per_day }} DT</td>
+                        <td>{{ car.get_transmission_display }}</td>
+                        <td>
+                            <span class="status-badge {% if car.is_available %}status-confirmed{% else %}status-cancelled{% endif %}">
+                                {% if car.is_available %}Disponible{% else %}Indisponible{% endif %}
+                            </span>
+                        </td>
+                        <td style="display:flex; gap:8px; flex-wrap:wrap;">
+                            <a href="{% url 'car_detail' car.pk %}" class="btn-card" style="font-size:0.75rem;">Voir</a>
+                            <a href="{% url 'admin_car_edit' car.pk %}" class="btn-card" style="font-size:0.75rem;">Modifier</a>
+                            <a href="{% url 'admin_car_delete' car.pk %}" class="btn-danger-sm" onclick="return confirm('Supprimer ce véhicule ?')">Supprimer</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="7" style="text-align:center; color:var(--text-muted); padding:32px;">Aucun véhicule trouvé.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Mon Profil — AutoLux{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1>Mon Profil</h1>
+    </div>
+</div>
+<section class="auth-section">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="profile-avatar">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</div>
+            <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+            <p>@{{ user.username }}</p>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}<span class="form-error">{{ field.errors.0 }}</span>{% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn-primary btn-lg" style="width:100%; margin-top:8px;">Mettre à jour</button>
+        </form>
+        <div style="margin-top:24px; text-align:center;">
+            <a href="{% url 'my_bookings' %}" class="btn-ghost">Voir mes réservations</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Connexion — AutoLux{% endblock %}
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card">
+        <div class="auth-header">
+            <span class="logo-icon">◆</span>
+            <h2>Connexion</h2>
+            <p>Accédez à votre espace AutoLux</p>
+        </div>
+        <form method="POST">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label }}</label>
+                <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}" class="form-control" placeholder="{{ field.label }}" {% if field.value %}value="{{ field.value }}"{% endif %}>
+                {% if field.errors %}<span class="form-error">{{ field.errors.0 }}</span>{% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn-primary btn-lg" style="width:100%; margin-top:8px;">Se connecter</button>
+        </form>
+        <p class="auth-footer">Pas encore de compte ? <a href="{% url 'register' %}">S'inscrire</a></p>
+    </div>
+</section>
+{% endblock %}
