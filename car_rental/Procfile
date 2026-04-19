@@ -1,1 +1,1 @@
-web: python /app/car_rental/manage.py migrate && gunicorn --chdir /app/car_rental car_rental.wsgi:application --bind 0.0.0.0:$PORT
+web: python manage.py migrate && gunicorn car_rental.wsgi:application --bind 0.0.0.0:$PORT
