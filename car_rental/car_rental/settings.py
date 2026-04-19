@@ -109,8 +109,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # WhiteNoise compression en production
 if IS_PRODUCTION:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 # ── Médias (uploads) ───────────────────────────────────────────────────────────
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
